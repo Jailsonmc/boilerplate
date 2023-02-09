@@ -10,8 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class BoilerplateApplicationTests {
@@ -31,18 +32,25 @@ class BoilerplateApplicationTests {
 		device.setBrand("Device Brand");
 
 		this.deviceRepository.save(device);
-		Assertions.assertNotNull(this.deviceRepository.findById(1L).get());
+		Assertions.assertNotNull(this.deviceRepository.findDeviceByName("Device Name"));
 	}
 
     @Test
     @DisplayName("Create Operation")
     public void testCreateOperation() {
 
-        Operation clear = new Operation("CLEAR");
+        Operation clear = new Operation("OPEN");
         clear.setId(1L);
 
         this.operationRepository.save(clear);
-        Assertions.assertNotNull(this.operationRepository.findById(1L).get());
+        Assertions.assertNotNull(this.operationRepository.findOperationByName("OPEN"));
+    }
+
+    @Test
+    @DisplayName("Read All Devices")
+    public void testReadAll() {
+        List<Device> devices = deviceRepository.findAll();
+        assertTrue(() -> devices.size() > 0);
     }
 
 }
