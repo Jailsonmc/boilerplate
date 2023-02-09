@@ -44,4 +44,8 @@ public class DeviceService {
         }
         return device.getId() + 1;
     }
+
+    public List<Device> getDevicesByBrand(String brand) {
+        return deviceRepository.findDeviceByBrand(brand);
+    }
 }

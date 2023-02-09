@@ -63,4 +63,11 @@ class BoilerplateApplicationTests {
         });
     }
 
+    @Test
+    @DisplayName("Single Device By Brand")
+    public void testSingleDeviceByBrand() {
+        List<Device> devices = this.deviceRepository.findDeviceByBrand("LG");
+        assertTrue(() -> devices.size() > 0);
+    }
+
 }

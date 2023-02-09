@@ -27,6 +27,11 @@ public class DeviceController {
         return this.deviceService.getDevice(deviceId);
     }
 
+    @GetMapping
+    public List<Device> getDevicesByBrand(@RequestParam(required = true) String brand) {
+        return deviceService.getDevicesByBrand(brand);
+    }
+
     @PostMapping
     public void addDevice(@RequestBody Device device) {
         deviceService.addDevice(device);
