@@ -15,4 +15,6 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     @Query("SELECT d FROM Device d WHERE d.name = ?1")
     Optional<Device> findDeviceByName(String name);
 
+    Device findFirstByOrderByIdDesc();
+
 }

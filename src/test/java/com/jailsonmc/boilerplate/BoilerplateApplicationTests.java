@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -51,6 +52,15 @@ class BoilerplateApplicationTests {
     public void testReadAll() {
         List<Device> devices = deviceRepository.findAll();
         assertTrue(() -> devices.size() > 0);
+    }
+
+    @Test
+    @DisplayName("Single Device")
+    public void testSingleDevice() {
+        Optional<Device> studentOptional = this.deviceRepository.findDeviceByName("GT-100");
+        Assertions.assertTrue(() -> {
+            return studentOptional.isPresent();
+        });
     }
 
 }

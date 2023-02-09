@@ -18,7 +18,7 @@ public class Device {
     @Column(name = "brand")
     private String brand;
     @Column(name = "CreationTime")
-    private LocalDate CreationTime;
+    private LocalDate creationTime;
 
     @ManyToMany(fetch = FetchType.LAZY,
         cascade = {
@@ -31,12 +31,13 @@ public class Device {
     private Set<Operation> operations = new HashSet<>();
 
     public Device() {
+        this.creationTime = LocalDate.now();
     }
 
     public Device(String name, String brand) {
         this.name = name;
         this.brand = brand;
-        CreationTime = LocalDate.now();
+        this.creationTime = LocalDate.now();
     }
 
     public Long getId() {
@@ -64,11 +65,11 @@ public class Device {
     }
 
     public LocalDate getCreationTime() {
-        return CreationTime;
+        return creationTime;
     }
 
     public void setCreationTime(LocalDate creationTime) {
-        CreationTime = creationTime;
+        this.creationTime = creationTime;
     }
 
     public void addOperation(Operation operation) {
@@ -92,7 +93,7 @@ public class Device {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", brand='" + brand + '\'' +
-                ", CreationTime=" + CreationTime +
+                ", CreationTime=" + creationTime +
                 ", SupportedOperations=" + operations +
                 '}';
     }
