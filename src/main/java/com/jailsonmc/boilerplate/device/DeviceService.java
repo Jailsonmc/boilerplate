@@ -1,9 +1,11 @@
 package com.jailsonmc.boilerplate.device;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -47,5 +49,30 @@ public class DeviceService {
 
     public List<Device> getDevicesByBrand(String brand) {
         return deviceRepository.findDeviceByBrand(brand);
+    }
+
+    public void deleteDevice(Long deviceId) {
+        boolean exists = deviceRepository.existsById(deviceId);
+        if(!exists) {
+            throw new IllegalStateException("Device with id " + deviceId + " does not exists.");
+        }
+        deviceRepository.deleteById(deviceId);
+    }
+
+    @Transactional
+    public void updateService(Long deviceId, String name, String brand) {
+        Device device = deviceRepository.findById(deviceId).orElseThrow((() -> new IllegalStateException(
+                "Device with id " + deviceId + " does not exist."
+        )));
+        if(name != null && name.length() > 0 && !Objects.equals(device.getName(), name)) {
+            Optional<Device> deviceOptional = deviceRepository.findDeviceByName(name);
+            if(deviceOptional.isPresent()) {
+                throw new IllegalStateException("Name taken");
+            }
+            device.setName(name);
+        }
+        if(brand != null && brand.length() > 0 && !Objects.equals(device.getBrand(), brand)) {
+            device.setBrand(brand);
+        }
     }
 }

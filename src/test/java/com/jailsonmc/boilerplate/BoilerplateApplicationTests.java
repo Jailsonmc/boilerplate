@@ -57,9 +57,9 @@ class BoilerplateApplicationTests {
     @Test
     @DisplayName("Single Device")
     public void testSingleDevice() {
-        Optional<Device> studentOptional = this.deviceRepository.findDeviceByName("GT-100");
+        Optional<Device> deviceOptional = this.deviceRepository.findDeviceByName("GT-100");
         Assertions.assertTrue(() -> {
-            return studentOptional.isPresent();
+            return deviceOptional.isPresent();
         });
     }
 
@@ -68,6 +68,28 @@ class BoilerplateApplicationTests {
     public void testSingleDeviceByBrand() {
         List<Device> devices = this.deviceRepository.findDeviceByBrand("LG");
         assertTrue(() -> devices.size() > 0);
+    }
+
+    @Test
+    @DisplayName("Update Device")
+    public void testUpdate() {
+        Optional<Device> deviceOptional = this.deviceRepository.findDeviceByName("GT-100");
+        Device device = (Device)deviceOptional.orElse(null);
+        device.setName("GT-101");
+        this.deviceRepository.save(device);
+        Assertions.assertTrue(() -> {
+            return device.getName().equals("GT-101");
+        });
+    }
+
+    @Test
+    @DisplayName("Delete Device")
+    public void testDelete() {
+        this.deviceRepository.deleteById(2L);
+        Optional<Device> deviceOptional = this.deviceRepository.findById(2L);
+        Assertions.assertFalse(() -> {
+            return deviceOptional.isPresent();
+        });
     }
 
 }

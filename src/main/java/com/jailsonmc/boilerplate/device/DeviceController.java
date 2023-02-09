@@ -37,4 +37,18 @@ public class DeviceController {
         deviceService.addDevice(device);
     }
 
+    @DeleteMapping(path = "{deviceId}")
+    public void deleteDevice(@PathVariable("deviceId") Long deviceId) {
+        deviceService.deleteDevice(deviceId);
+    }
+
+    @PutMapping(path = "{deviceId}")
+    public void updateDevice(
+            @PathVariable("deviceId") Long deviceId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String brand
+    ) {
+        deviceService.updateService(deviceId, name, brand);
+    }
+
 }
