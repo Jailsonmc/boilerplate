@@ -3,45 +3,40 @@ package com.jailsonmc.boilerplate.device;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "devices")
 public class Device {
 
     @Id
-    @SequenceGenerator(
-            name = "device",
-            sequenceName = "device_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "device_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "brand")
     private String brand;
+    @Column(name = "CreationTime")
     private LocalDate CreationTime;
-    @Enumerated(EnumType.STRING)
-    private List<SupportedOperations> SupportedOperations;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+        cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+        })
+    @JoinTable(name="supported_operations",
+        joinColumns = { @JoinColumn(name = "device_id")},
+        inverseJoinColumns = { @JoinColumn(name = "operation_id")})
+    private Set<Operation> operations = new HashSet<>();
 
     public Device() {
     }
 
-    public Device(Long id, String name, String brand, List<SupportedOperations> supportedOperations) {
-        this.id = id;
+    public Device(String name, String brand) {
         this.name = name;
         this.brand = brand;
         CreationTime = LocalDate.now();
-        SupportedOperations = supportedOperations;
-    }
-
-    public Device(String name, String brand, List<SupportedOperations> supportedOperations) {
-        this.name = name;
-        this.brand = brand;
-        CreationTime = LocalDate.now();
-        SupportedOperations = supportedOperations;
     }
 
     public Long getId() {
@@ -72,12 +67,23 @@ public class Device {
         return CreationTime;
     }
 
-    public List<com.jailsonmc.boilerplate.device.SupportedOperations> getSupportedOperations() {
-        return SupportedOperations;
+    public void setCreationTime(LocalDate creationTime) {
+        CreationTime = creationTime;
     }
 
-    public void setSupportedOperations(List<com.jailsonmc.boilerplate.device.SupportedOperations> supportedOperations) {
-        SupportedOperations = supportedOperations;
+    public void addOperation(Operation operation) {
+        this.operations.add(operation);
+        operation.getDevices().add(this);
+    }
+
+    public void removeOperation(long operationId) {
+        Operation operation = this.operations.stream().filter(
+                o -> o.getId() == operationId
+        ).findFirst().orElse(null);
+        if (operation != null) {
+            this.operations.remove(operation);
+            operation.getDevices().remove(this);
+        }
     }
 
     @Override
@@ -87,7 +93,7 @@ public class Device {
                 ", name='" + name + '\'' +
                 ", brand='" + brand + '\'' +
                 ", CreationTime=" + CreationTime +
-                ", SupportedOperations=" + SupportedOperations +
+                ", SupportedOperations=" + operations +
                 '}';
     }
 }
