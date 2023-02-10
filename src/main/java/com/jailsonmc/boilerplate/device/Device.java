@@ -77,6 +77,14 @@ public class Device {
         operation.getDevices().add(this);
     }
 
+    public Set<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(Set<Operation> operations) {
+        this.operations = operations;
+    }
+
     public void removeOperation(long operationId) {
         Operation operation = this.operations.stream().filter(
                 o -> o.getId() == operationId
