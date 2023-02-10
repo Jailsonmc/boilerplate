@@ -72,27 +72,12 @@ public class Device {
         this.creationTime = creationTime;
     }
 
-    public void addOperation(Operation operation) {
-        this.operations.add(operation);
-        operation.getDevices().add(this);
-    }
-
     public Set<Operation> getOperations() {
         return operations;
     }
 
     public void setOperations(Set<Operation> operations) {
         this.operations = operations;
-    }
-
-    public void removeOperation(long operationId) {
-        Operation operation = this.operations.stream().filter(
-                o -> o.getId() == operationId
-        ).findFirst().orElse(null);
-        if (operation != null) {
-            this.operations.remove(operation);
-            operation.getDevices().remove(this);
-        }
     }
 
     @Override
