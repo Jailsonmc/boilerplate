@@ -48,7 +48,7 @@ public class DeviceController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String brand
     ) {
-        deviceService.updateService(deviceId, name, brand);
+        deviceService.updateDevice(deviceId, name, brand);
     }
 
 }

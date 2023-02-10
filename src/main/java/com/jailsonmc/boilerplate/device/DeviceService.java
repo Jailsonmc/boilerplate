@@ -60,7 +60,7 @@ public class DeviceService {
     }
 
     @Transactional
-    public void updateService(Long deviceId, String name, String brand) {
+    public void updateDevice(Long deviceId, String name, String brand) {
         Device device = deviceRepository.findById(deviceId).orElseThrow((() -> new IllegalStateException(
                 "Device with id " + deviceId + " does not exist."
         )));
