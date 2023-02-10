@@ -75,4 +75,22 @@ public class DeviceService {
             device.setBrand(brand);
         }
     }
+
+    public void updateDeviceFull(Long deviceId, Device device) {
+
+        Optional<Device> deviceOptional = deviceRepository.findById(deviceId);
+
+        if(!deviceOptional.isPresent()) {
+            throw new IllegalStateException("device does not exists");
+        }
+
+        Device _device = deviceOptional.get();
+
+        _device.setName(device.getName());
+        _device.setBrand(device.getBrand());
+        _device.setOperations(device.getOperations());
+
+        deviceRepository.save(_device);
+
+    }
 }

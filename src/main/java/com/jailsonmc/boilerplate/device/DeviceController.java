@@ -51,4 +51,9 @@ public class DeviceController {
         deviceService.updateDevice(deviceId, name, brand);
     }
 
+    @PutMapping(path = "full/{deviceId}")
+    public void updateDeviceFull(@PathVariable("deviceId") Long deviceId, @RequestBody Device device) {
+        deviceService.updateDeviceFull(deviceId, device);
+    }
+
 }
